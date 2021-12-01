@@ -39,6 +39,7 @@ class DBActiveShopifyShopsFacade {
       }
       // else do nothing - user already installed shop and installed it again --> no problem
     } catch (err) {
+      console.log("INSTALL_SHOP",err);
       errorLog(err, shop_domain, TOPIC + ".installNewShop");
     }
   }
