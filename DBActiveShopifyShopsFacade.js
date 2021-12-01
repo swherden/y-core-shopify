@@ -260,6 +260,7 @@ class DBActiveShopifyShopsFacade {
       return shopData;
     } catch (error) {
       errorLog("Error during fetch shop data. " + error, shop_domain, TOPIC);
+      console.log(error);
     }
     return undefined;
   }
