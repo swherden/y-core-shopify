@@ -34,14 +34,13 @@ class ShopifyRegistry {
     if (!shopify) {
       shopify = this.#createNewInstance(shop_domain, accessToken);
     } else {
-      try {
+      // try {
         const __accessToken = shopify.options.accessToken;
         if (__accessToken !== accessToken)
           shopify = this.#createNewInstance(shop_domain, accessToken); //if accessToken changed due to reinstall
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
+      // } catch (error) {
+      //   throw error;
+      // }
     }
     return shopify;
   }
