@@ -39,6 +39,7 @@ class ShopifyRegistry {
         if (__accessToken !== accessToken)
           shopify = this.#createNewInstance(shop_domain, accessToken); //if accessToken changed due to reinstall
       } catch (error) {
+        console.log(error);
         throw error;
       }
     }
