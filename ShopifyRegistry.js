@@ -6,6 +6,7 @@ class ShopifyRegistry {
   #dbPool;
   #SHOPIFY_API_SECRET_KEY;
   #API_VERSION;
+  #HOST_NAME;
   #shopifySingletons;
   #Shopify;
   #Webhooks;
@@ -15,6 +16,7 @@ class ShopifyRegistry {
     this.#dbPool = dbPool;
     this.#SHOPIFY_API_SECRET_KEY = Shopify.Context.API_SECRET_KEY;
     this.#API_VERSION = Shopify.Context.API_VERSION;
+    this.#HOST_NAME = Shopify.Context.HOST_NAME;
     this.#Shopify = Shopify;
     this.#Webhooks = new Map();
   }
@@ -28,17 +30,18 @@ class ShopifyRegistry {
   }
 
   async registerWebhook(webhookconfig) {
-    const { shop_domain, accessToken, path, topic, webhookHandler } = webhookconfig;
-    if (!shop_domain || !accessToken || !path || !topic || !webhookHandler) throw 'Webhook not configured!'
+    const { shop, accessToken, path, topic, webhookHandler } = webhookconfig;
+    if (!shop || !accessToken || !path || !topic || !webhookHandler) throw 'Webhook not configured!'
 
     this.#Webhooks.set(topic, webhookHandler);
+    const address = `https://${this.#HOST_NAME}${path}`
 
     return await ShopifyWebhooks.registerWebhook({
-      address: `https://${this.#Shopify.Context.HOST_NAME}/${path}`,
+      address: address,
       topic: topic,
       accessToken,
-      shop_domain,
-      apiVersion: this.Shopify.API_VERSION
+      shop,
+      apiVersion: this.#API_VERSION
     });
   }
 
