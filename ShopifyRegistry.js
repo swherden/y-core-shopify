@@ -29,6 +29,8 @@ class ShopifyRegistry {
 
   async registerWebhook(webhookconfig) {
     const { shop_domain, accessToken, path, topic, webhookHandler } = webhookconfig;
+    if (!shop_domain || !accessToken || !path || !topic || !webhookHandler) throw 'Webhook not configured!'
+
     this.#Webhooks.set(topic, webhookHandler);
 
     return await ShopifyWebhooks.registerWebhook({
