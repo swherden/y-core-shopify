@@ -6,19 +6,16 @@ class ShopifyRegistry {
   #dbPool;
   #SHOPIFY_API_SECRET_KEY;
   #API_VERSION;
-  #HOST_NAME;
   #shopifySingletons;
   #Shopify;
-  #Webhooks;
+
 
   constructor(dbPool, Shopify) {
     this.#shopifySingletons = new Map();
     this.#dbPool = dbPool;
     this.#SHOPIFY_API_SECRET_KEY = Shopify.Context.API_SECRET_KEY;
     this.#API_VERSION = Shopify.Context.API_VERSION;
-    this.#HOST_NAME = Shopify.Context.HOST_NAME;
     this.#Shopify = Shopify;
-    this.#Webhooks = new Map();
   }
 
   get dbPool() {
@@ -27,23 +24,6 @@ class ShopifyRegistry {
 
   get Shopify() {
     return this.#Shopify;
-  }
-
-  async registerWebhook(webhookconfig) {
-    const { shop, accessToken, path, topic, webhookHandler } = webhookconfig;
-    if (!shop || !accessToken || !path || !topic || !webhookHandler) throw 'Webhook not configured!'
-
-    this.#Webhooks.set(topic, webhookHandler);
-    // const address = `https://${this.#HOST_NAME}${path}`
-    const address = `https://test.y-core-dev.com${path}`;
-
-    return await ShopifyWebhooks.registerWebhook({
-      address: address,
-      topic: topic,
-      accessToken,
-      shop,
-      apiVersion: this.#API_VERSION
-    });
   }
 
   async getCurrentSession(ctx) {
