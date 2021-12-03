@@ -35,6 +35,7 @@ class ShopifyRegistry {
 
     this.#Webhooks.set(topic, webhookHandler);
     const address = `https://${this.#HOST_NAME}${path}`
+    console.log(webhookconfig);
 
     return await ShopifyWebhooks.registerWebhook({
       address: address,
