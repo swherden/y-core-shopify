@@ -1,5 +1,6 @@
 const Shopify = require("shopify-api-node");
 const { encrypt, decrypt } = require("../y-core-crypto");
+import * as ShopifyWebhooks from "@shopify/koa-shopify-webhooks";
 
 class ShopifyRegistry {
   #dbPool;
@@ -7,6 +8,7 @@ class ShopifyRegistry {
   #API_VERSION;
   #shopifySingletons;
   #Shopify;
+  #Webhooks;
 
   constructor(dbPool, Shopify) {
     this.#shopifySingletons = new Map();
@@ -14,6 +16,7 @@ class ShopifyRegistry {
     this.#SHOPIFY_API_SECRET_KEY = Shopify.Context.API_SECRET_KEY;
     this.#API_VERSION = Shopify.Context.API_VERSION;
     this.#Shopify = Shopify;
+    this.#Webhooks = new Map();
   }
 
   get dbPool() {
@@ -22,6 +25,19 @@ class ShopifyRegistry {
 
   get Shopify() {
     return this.#Shopify;
+  }
+
+  async registerWebhook(webhookconfig) {
+    const { shop_domain, accessToken, path, topic, webhookHandler } = webhookconfig;
+    this.#Webhooks.set(topic, webhookHandler);
+
+    return await ShopifyWebhooks.registerWebhook({
+      address: `https://${this.#Shopify.Context.HOST_NAME}/${path}`,
+      topic: topic,
+      accessToken,
+      shop_domain,
+      apiVersion: this.Shopify.API_VERSION
+    });
   }
 
   async getCurrentSession(ctx) {
