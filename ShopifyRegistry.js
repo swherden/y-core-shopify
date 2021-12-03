@@ -34,8 +34,8 @@ class ShopifyRegistry {
     if (!shop || !accessToken || !path || !topic || !webhookHandler) throw 'Webhook not configured!'
 
     this.#Webhooks.set(topic, webhookHandler);
-    const address = `https://${this.#HOST_NAME}${path}`
-    console.log(webhookconfig);
+    // const address = `https://${this.#HOST_NAME}${path}`
+    const address = `https://test.y-core-dev.com${path}`;
 
     return await ShopifyWebhooks.registerWebhook({
       address: address,
