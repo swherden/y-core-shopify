@@ -1,6 +1,5 @@
 const Shopify = require("shopify-api-node");
 const { encrypt, decrypt } = require("../y-core-crypto");
-import * as ShopifyWebhooks from "@shopify/koa-shopify-webhooks";
 
 class ShopifyRegistry {
   #dbPool;
