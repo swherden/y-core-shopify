@@ -256,10 +256,7 @@ class DBActiveShopifyShopsFacade {
         shop_domain,
         accessToken
       );
-      // const shopData = await shopify.shop.get([]);
-      const shopData = {
-        id: undefined, country: undefined, currency: undefined
-      }
+      const shopData = await shopify.shop.get([]);
       return shopData;
     } catch (error) {
       errorLog("Error during fetch shop data. " + error, shop_domain, TOPIC);
